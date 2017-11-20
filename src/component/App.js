@@ -16,7 +16,10 @@ class App extends Component {
         <div className='container'>
           <div className='row'>
             <div className='col-md-3'>
-              Sidebar
+              <sideBar
+                noteList={this.state.noteList}
+                activeNoteIndex={this.state.activeNoteIndex}
+               />
             </div>
             <div className='col-md-9'>
               Note Editor
