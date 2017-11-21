@@ -1,31 +1,41 @@
 import React, { Component } from 'react'
-import sideBar from './sidebar'
-import Editor from './editor'
+import NoteList from './note_list'
+import NoteEditor from './note_editor'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      noteList: [],
-      activeNoteIndex: ''
+      notes: [],
+      selectedNote: null
     }
+  }
+
+  addNewNote () {
+    let updatedNotes = this.state.notes
+    updatedNotes.push({title: `Note ${updatedNotes.length + 1}`, body: ''})
+    this.setState({
+      notes: updatedNotes,
+      selectedNote: updatedNotes[-1]
+    })
   }
 
   render() {
     return(
       <div className='App'>
-        <h1>Simple Note Taker</h1>
+        <h1>Note Taker</h1>
         <div className='container'>
           <div className='row'>
             <div className='col-md-3'>
-              <sideBar
-                noteList={this.state.noteList}
-                activeNoteIndex={this.state.activeNoteIndex}
+              <NoteList
+                notes={this.state.notes}
+                addNewNote={() => this.addNewNote()}
+                onNoteSelect={ (selectedNote) => this.setState({selectedNote}) }
                />
             </div>
             <div className='col-md-9'>
-              <Editor
-                activeNote={this.state.noteList[this.state.activeNoteIndex]}
+              <NoteEditor
+                note={this.state.selectedNote}
               />
             </div>
           </div>
