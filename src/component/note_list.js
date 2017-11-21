@@ -4,8 +4,13 @@ const NoteList = (props) => {
   const noteItems = props.notes.map( (note, index) => {
     return (
       <li
-        onClick={ () => props.onNoteSelect(note) }
-        key={index}>
+        onClick={ () => props.onNoteSelect(index) }
+        key={index}
+        style={
+          index === props.selectedIndex
+          ? {fontWeight: 'bold'}
+          : {fontWeight: 'normal'}
+        }>
         {note.title}
       </li>
     )
@@ -14,7 +19,7 @@ const NoteList = (props) => {
   return (
     <div>
       <button
-        onClick={() => props.addNewNote()}>
+        onClick={ () => props.addNewNote() }>
         +
       </button>
       <ul>

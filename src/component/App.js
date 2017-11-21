@@ -7,16 +7,34 @@ class App extends Component {
     super(props)
     this.state = {
       notes: [],
-      selectedNote: null
+      selectedIndex: null
     }
   }
 
-  addNewNote () {
+  addNewNote() {
     let updatedNotes = this.state.notes
     updatedNotes.push({title: `Note ${updatedNotes.length + 1}`, body: ''})
     this.setState({
       notes: updatedNotes,
-      selectedNote: updatedNotes[-1]
+      selectedIndex: updatedNotes.length - 1
+    })
+  }
+
+  changeNoteTitle(event) {
+    const { notes, selectedIndex } = this.state
+    const updatedNote = { ...notes[selectedIndex], title: event.target.value }
+    notes[selectedIndex] = updatedNote
+    this.setState({
+      notes: notes
+    })
+  }
+
+  changeNoteBody(event) {
+    const { notes, selectedIndex } = this.state
+    const updatedNote = { ...notes[selectedIndex], body: event.target.value }
+    notes[selectedIndex] = updatedNote
+    this.setState({
+      notes: notes
     })
   }
 
@@ -26,16 +44,19 @@ class App extends Component {
         <h1>Note Taker</h1>
         <div className='container'>
           <div className='row'>
-            <div className='col-md-3'>
+            <div className='col-md-4'>
               <NoteList
                 notes={this.state.notes}
-                addNewNote={() => this.addNewNote()}
-                onNoteSelect={ (selectedNote) => this.setState({selectedNote}) }
+                selectedIndex={this.state.selectedIndex}
+                addNewNote={ () => this.addNewNote() }
+                onNoteSelect={ (selectedIndex) => this.setState({selectedIndex}) }
                />
             </div>
-            <div className='col-md-9'>
+            <div className='col-md-8'>
               <NoteEditor
-                note={this.state.selectedNote}
+                note={this.state.notes[this.state.selectedIndex]}
+                changeNoteTitle={ (event) => this.changeNoteTitle(event) }
+                changeNoteBody={ (event) => this.changeNoteBody(event) }
               />
             </div>
           </div>
