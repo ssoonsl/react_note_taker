@@ -7,20 +7,24 @@ class App extends Component {
     super(props)
     this.state = {
       notes: [],
-      selectedIndex: null
+      selectedIndex: null,
+      notesCreated: null
     }
   }
 
-  addNewNote() {
-    let updatedNotes = this.state.notes
-    updatedNotes.push({title: `Note ${updatedNotes.length + 1}`, body: ''})
+  addNewNote () {
+    let updatedNotes = this.state.notes.slice()
+    let notesCreated = this.state.notesCreated
+    notesCreated++
+    updatedNotes.push({title: `Note ${notesCreated}`, body: ''})
     this.setState({
       notes: updatedNotes,
-      selectedIndex: updatedNotes.length - 1
+      selectedIndex: updatedNotes.length - 1,
+      notesCreated: notesCreated
     })
   }
 
-  changeNoteTitle(event) {
+  changeNoteTitle (event) {
     const { notes, selectedIndex } = this.state
     const updatedNote = { ...notes[selectedIndex], title: event.target.value }
     notes[selectedIndex] = updatedNote
@@ -29,7 +33,7 @@ class App extends Component {
     })
   }
 
-  changeNoteBody(event) {
+  changeNoteBody (event) {
     const { notes, selectedIndex } = this.state
     const updatedNote = { ...notes[selectedIndex], body: event.target.value }
     notes[selectedIndex] = updatedNote
