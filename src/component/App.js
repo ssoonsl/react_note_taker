@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+
 import NoteList from './note_list'
 import NoteEditor from './note_editor'
 
@@ -42,30 +44,54 @@ class App extends Component {
     })
   }
 
+  deleteNote (index) {
+    const updatedNotes = this.state.notes.slice()
+    updatedNotes.splice(index, 1)
+    console.log(index)
+    this.setState({
+      notes: updatedNotes
+    })
+  }
+
   render() {
     return(
-      <div className='App'>
-        <h1>Note Taker</h1>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-4'>
-              <NoteList
-                notes={this.state.notes}
-                selectedIndex={this.state.selectedIndex}
-                addNewNote={ () => this.addNewNote() }
-                onNoteSelect={ (selectedIndex) => this.setState({selectedIndex}) }
-               />
-            </div>
-            <div className='col-md-8'>
-              <NoteEditor
-                note={this.state.notes[this.state.selectedIndex]}
-                changeNoteTitle={ (event) => this.changeNoteTitle(event) }
-                changeNoteBody={ (event) => this.changeNoteBody(event) }
-              />
+      <Router>
+        <div className='App'>
+          <h1>Note Taker</h1>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-4'>
+                <NoteList
+                  notes={this.state.notes}
+                  selectedIndex={this.state.selectedIndex}
+                  addNewNote={ () => this.addNewNote() }
+                  onNoteSelect={ (selectedIndex) => this.setState({selectedIndex}) }
+                  deleteNote={ (el) => this.deleteNote(el) }
+                 />
+              </div>
+              <div className='col-md-8'>
+                <Route exact={true} path='/' render={ () => (
+                  <div>
+                    <h1>Welcome to the note taking app!</h1>
+                    <NoteEditor
+                      note={this.state.notes[this.state.selectedIndex]}
+                      changeNoteTitle={ (event) => this.changeNoteTitle(event) }
+                      changeNoteBody={ (event) => this.changeNoteBody(event) }
+                    />
+                  </div>
+                )} />
+                <Route path='/notes/:noteId' component={NoteEditor}/>
+
+                <NoteEditor
+                  note={this.state.notes[this.state.selectedIndex]}
+                  changeNoteTitle={ (event) => this.changeNoteTitle(event) }
+                  changeNoteBody={ (event) => this.changeNoteBody(event) }
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Router>
     )
   }
 }
