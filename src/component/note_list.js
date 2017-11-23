@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Link } from 'react-router-dom'
 const NoteList = (props) => {
   const noteItems = props.notes.map( (note, index) => {
     return (
-      <Link to={`/notes/${index}`}>
+      <Link to={`/notes/${index}`} key={index}>
         <li
           onClick={ (event) => {
             console.log(event)
             props.onNoteSelect(index)
-          }}
-           key={index}
+          }
+
           style={
             index === props.selectedIndex ? {fontWeight: 'bold'} : null
           }>
