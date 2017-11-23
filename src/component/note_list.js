@@ -1,18 +1,28 @@
 import React from 'react'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 
 const NoteList = (props) => {
   const noteItems = props.notes.map( (note, index) => {
     return (
-      <li
-        onClick={ () => props.onNoteSelect(index) }
-        key={index}
-        style={
-          index === props.selectedIndex
-          ? {fontWeight: 'bold'}
-          : {fontWeight: 'normal'}
-        }>
-        {note.title}
-      </li>
+      <Link to={`/notes/${index}`} key={index}>
+        <li
+          onClick={ (event) => {
+            console.log(event)
+            props.onNoteSelect(index)
+          }
+
+          style={
+            index === props.selectedIndex ? {fontWeight: 'bold'} : null
+          }>
+          {note.title}
+          <button
+            onClick={ () => props.deleteNote(index) }
+            key={index}
+            >
+              X
+            </button>
+        </li>
+      </Link>
     )
   })
 
